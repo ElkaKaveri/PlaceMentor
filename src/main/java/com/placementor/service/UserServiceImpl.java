@@ -20,7 +20,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // AUTO VERIFY STUDENT & ADMIN
+        if (user.getRole().equals("STUDENT") || user.getRole().equals("ADMIN")) {
+            user.setVerified(true);
+        } else {
+            // MENTOR / ALUMNI
+            user.setVerified(false);
+        }
+
         return userRepository.save(user);
     }
 

@@ -13,7 +13,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String role; // STUDENT, MENTOR, ALUMNI, ADMIN
+    private String role;   // STUDENT, MENTOR, ALUMNI, ADMIN
+    private boolean verified;
 
     public User() {}
 
@@ -55,5 +56,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }
