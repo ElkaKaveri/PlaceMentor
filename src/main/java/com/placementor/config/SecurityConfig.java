@@ -17,19 +17,34 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+
+                // PUBLIC APIs
                 .requestMatchers("/api/users/register", "/api/users/login").permitAll()
+
+                // ADMIN APIs
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // MENTOR & ALUMNI APIs
+                .requestMatchers("/api/mentor/**").hasAnyRole("MENTOR", "ALUMNI")
+
+                // STUDENT APIs
+                .requestMatchers("/api/student/**").hasRole("STUDENT")
+
+                // EVERYTHING ELSE
                 .anyRequest().authenticated()
             )
             .httpBasic(httpBasic -> {});
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(
